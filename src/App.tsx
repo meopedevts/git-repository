@@ -1,9 +1,11 @@
+import { Routes } from './Routes';
+import GlobalStyle from './styles/Global';
+
 function App() {
   return (
     <>
-      <div>
-        <h1>Projeto</h1>
-      </div>
+      <GlobalStyle />
+      <Routes />
     </>
   );
 };
