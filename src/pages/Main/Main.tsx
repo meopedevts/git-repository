@@ -52,6 +52,7 @@ export const Main = () => {
       
           console.log([...repositorios, data]);
           setRepositorios([...repositorios, data]);
+          setInitialLoad(true);
           setNewRepo('');
       } catch(error) {
           setAlert(true);
@@ -70,7 +71,7 @@ export const Main = () => {
 
   const handleDelete = useCallback((repo) => {
     const find = repositorios.filter(r => r.name !== repo);
-    setRepositorios(find);
+    r(find);
   }, [repositorios])
 
   return (
