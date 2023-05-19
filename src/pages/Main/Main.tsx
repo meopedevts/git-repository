@@ -9,20 +9,48 @@ export const Main = () => {
   const [repositorios, setRepositorios] = useState([]);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(false);
+  const [initialLoad, setInitialLoad] = useState(false);
 
-  //Buscar
+  // // Buscar
+  // useEffect(() => {
+  //   console.log('Buscar Effect');
+  //   const repoStorage = localStorage.getItem('repos');
+  //   if (repoStorage) {
+  //     const parsedRepoStorage = JSON.parse(repoStorage);
+  //     console.log(parsedRepoStorage);
+  //     console.log('Salvando valores no meu repositorios');
+  //     setRepositorios(parsedRepoStorage);
+  //   }
+  // }, []);
+
+  // // Salvar alterações
+  // useEffect(() => {
+  //   console.log('Salvar Effect');
+  //   localStorage.setItem('repos', JSON.stringify(repositorios));
+  // }, [repositorios]);
+
+  // Buscar
   useEffect(() => {
+    console.log('Buscar Effect');
     const repoStorage = localStorage.getItem('repos');
     
     if (repoStorage) {
-      setRepositorios(JSON.parse(repoStorage));
-    };
-  }, [])
-
-  //Salvar alterações
+      const parsedRepoStorage = JSON.parse(repoStorage);
+      console.log(parsedRepoStorage);
+      console.log('Salvando valores no meu repositorios');
+      setRepositorios(parsedRepoStorage);
+      setInitialLoad(true); // Marca a carga inicial como concluída
+    }
+  }, []);  
+  
   useEffect(() => {
-    localStorage.setItem('repos', JSON.stringify(repositorios));
-  }, [repositorios])
+    console.log('Salvar Effect');
+  
+    // Verifica se a carga inicial já foi concluída
+    if (initialLoad) {
+      localStorage.setItem('repos', JSON.stringify(repositorios));
+    }
+  }, [repositorios, initialLoad]);  
 
   const handleSubmit =  useCallback((e: any) => {
     e.preventDefault();
@@ -46,6 +74,7 @@ export const Main = () => {
             name: response.data.full_name,
           }
       
+          console.log([...repositorios, data]);
           setRepositorios([...repositorios, data]);
           setNewRepo('');
       } catch(error) {
