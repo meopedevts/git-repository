@@ -11,46 +11,22 @@ export const Main = () => {
   const [alert, setAlert] = useState(false);
   const [initialLoad, setInitialLoad] = useState(false);
 
-  // // Buscar
-  // useEffect(() => {
-  //   console.log('Buscar Effect');
-  //   const repoStorage = localStorage.getItem('repos');
-  //   if (repoStorage) {
-  //     const parsedRepoStorage = JSON.parse(repoStorage);
-  //     console.log(parsedRepoStorage);
-  //     console.log('Salvando valores no meu repositorios');
-  //     setRepositorios(parsedRepoStorage);
-  //   }
-  // }, []);
-
-  // // Salvar alterações
-  // useEffect(() => {
-  //   console.log('Salvar Effect');
-  //   localStorage.setItem('repos', JSON.stringify(repositorios));
-  // }, [repositorios]);
-
   // Buscar
   useEffect(() => {
-    console.log('Buscar Effect');
     const repoStorage = localStorage.getItem('repos');
-    
     if (repoStorage) {
       const parsedRepoStorage = JSON.parse(repoStorage);
-      console.log(parsedRepoStorage);
-      console.log('Salvando valores no meu repositorios');
       setRepositorios(parsedRepoStorage);
       setInitialLoad(true); // Marca a carga inicial como concluída
     }
   }, []);  
   
   useEffect(() => {
-    console.log('Salvar Effect');
-  
     // Verifica se a carga inicial já foi concluída
     if (initialLoad) {
       localStorage.setItem('repos', JSON.stringify(repositorios));
     }
-  }, [repositorios, initialLoad]);  
+  }, [repositorios, initialLoad]);
 
   const handleSubmit =  useCallback((e: any) => {
     e.preventDefault();
