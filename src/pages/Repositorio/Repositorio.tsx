@@ -27,7 +27,7 @@ export const Repositorio = (props) => {
 
       setRepositorios(repositorioData.data);
       setIssues(issuesData.data);
-      //setLoading(false);
+      setLoading(false);
     }
 
     load();
