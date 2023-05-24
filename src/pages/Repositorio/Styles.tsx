@@ -42,6 +42,7 @@ export const Owner = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
+  border-bottom: 1px solid #ddd;
 
   img{
     width: 9.375rem;
@@ -74,7 +75,7 @@ export const BackButton = styled(Link)`
 export const IssuesList = styled.ul`
   margin-left: 1.875rem;
   padding-top: 1.875rem;
-  border-top: 1px solid #ddd;
+  /* border-top: 1px solid #ddd; */
   list-style: none;
 
   li{
@@ -165,4 +166,17 @@ export const PageActions = styled.div`
       opacity: 0.5;
     }
   }
+`;
+
+export const IssuesFilter = styled.select`
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+  color: #fff;
+  background: #222;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+`;
+
+export const FilterOptions = styled.option`
+  color: #fff;
 `;

@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom';
-import { Container, Owner, Loading, BackButton, IssuesList, PageActions } from './Styles';
+import { Container, Owner, Loading, BackButton, IssuesList, PageActions, IssuesFilter, FilterOptions } from './Styles';
 import { FaSpinner, FaArrowLeft } from 'react-icons/fa'
 import { useState, useEffect } from 'react';
 import { Api } from '../../services/Api';
@@ -12,6 +12,7 @@ export const Repositorio = (props) => {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [optionFilter, setOptionFilter] = useState('all');
 
   useEffect(() => {
     const load = async () => {
@@ -20,7 +21,7 @@ export const Repositorio = (props) => {
         Api.get(`/repos/${nomeRepo}`),
         Api.get(`/repos/${nomeRepo}/issues`, {
           params: {
-            state: 'open',
+            state: optionFilter,
             per_page: 5
           }
         })
@@ -41,21 +42,27 @@ export const Repositorio = (props) => {
 
       const response = await Api.get(`/repos/${nomeRepo}/issues`, {
         params: {
-          state: 'open',
+          state: optionFilter,
           page,
           per_page: 5,
         },
       });
+      console.log(page);
 
       setIssues(response.data);
     };
 
     loadIssue();
-  }, [repositorio, page])
+  }, [repositorio, page, optionFilter])
 
   const handlePage = (action) => {
     setPage(action === 'back' ? page - 1 : page + 1);
   }
+
+  const handleOption = (e: any) => {
+    setOptionFilter(e.target.value);
+    setPage(1);
+  };
 
   if (loading) {
     return(
@@ -80,6 +87,15 @@ export const Repositorio = (props) => {
           <h1>{repositorios.name}</h1>
           <p>{repositorios.description}</p>
         </Owner>
+
+        <IssuesFilter 
+          value={optionFilter}
+          onChange={handleOption}
+        >
+          <FilterOptions value="all">Todas</FilterOptions>
+          <FilterOptions value="open">Abertas</FilterOptions>
+          <FilterOptions value="closed">Fechadas</FilterOptions>
+        </IssuesFilter>
 
         <IssuesList>
           {issues.map(issue => (
