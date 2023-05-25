@@ -6,6 +6,7 @@ export default createGlobalStyle`
     padding: 0;
     outline: 0;
     box-sizing: border-box;
+    scrollbar-width: thin;
   }
 
   html, body, #root{
@@ -26,5 +27,20 @@ export default createGlobalStyle`
 
   button{
     cursor: pointer;
+  }
+
+  ::-webkit-scrollbar {
+    width: 0.625rem;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 0.25rem;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #0D2636;
+    border: 0.5px solid #fff;
+    border-radius: 0.25rem;
   }
 `;

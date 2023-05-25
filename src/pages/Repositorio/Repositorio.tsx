@@ -1,6 +1,8 @@
 import { useParams } from 'react-router-dom';
-import { Container, Owner, Loading, BackButton, IssuesList, PageActions, IssuesFilter, FilterOptions } from './Styles';
-import { FaSpinner, FaArrowLeft } from 'react-icons/fa'
+import Select from 'react-select';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { Container, Owner, Loading, BackButton, IssuesList, PageActions, SelectStyle, CustomDropdown } from './Styles';
+import { FaSpinner, FaArrowLeft } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import { Api } from '../../services/Api';
 
@@ -12,7 +14,7 @@ export const Repositorio = (props) => {
   const [issues, setIssues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [optionFilter, setOptionFilter] = useState('all');
+  const [optionFilter, setOptionFilter] = useState({ value: 'all', label: 'Todas' });
 
   useEffect(() => {
     const load = async () => {
@@ -21,7 +23,7 @@ export const Repositorio = (props) => {
         Api.get(`/repos/${nomeRepo}`),
         Api.get(`/repos/${nomeRepo}/issues`, {
           params: {
-            state: optionFilter,
+            state: optionFilter.value,
             per_page: 5
           }
         })
@@ -42,12 +44,11 @@ export const Repositorio = (props) => {
 
       const response = await Api.get(`/repos/${nomeRepo}/issues`, {
         params: {
-          state: optionFilter,
+          state: optionFilter.value,
           page,
           per_page: 5,
         },
       });
-      console.log(page);
 
       setIssues(response.data);
     };
@@ -60,9 +61,16 @@ export const Repositorio = (props) => {
   }
 
   const handleOption = (e: any) => {
-    setOptionFilter(e.target.value);
+    // setOptionFilter(e.target.value);
+    setOptionFilter(e);
     setPage(1);
   };
+
+  const options = [
+    { value: 'all', label: 'Todas'},
+    { value: 'open', label: 'Abertas'},
+    { value: 'closed', label: 'Fechadas'}
+  ];
 
   if (loading) {
     return(
@@ -74,8 +82,7 @@ export const Repositorio = (props) => {
   };
 
   return (
-    <>
-      <Container>
+    <Container>
         <BackButton to="/">
           <FaArrowLeft color="#000" size={30}/>
         </BackButton>
@@ -88,14 +95,14 @@ export const Repositorio = (props) => {
           <p>{repositorios.description}</p>
         </Owner>
 
-        <IssuesFilter 
+        <Select 
+          options={options}
           value={optionFilter}
           onChange={handleOption}
-        >
-          <FilterOptions value="all">Todas</FilterOptions>
-          <FilterOptions value="open">Abertas</FilterOptions>
-          <FilterOptions value="closed">Fechadas</FilterOptions>
-        </IssuesFilter>
+          styles={SelectStyle}
+          isSearchable={false}
+          components={{ DropdownIndicator: CustomDropdown }}
+        />
 
         <IssuesList>
           {issues.map(issue => (
@@ -131,7 +138,6 @@ export const Repositorio = (props) => {
             Próxima
           </button>
         </PageActions>
-      </Container>
-    </>
+    </Container>
   );
 };

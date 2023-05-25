@@ -1,5 +1,7 @@
 import { styled, keyframes, css } from "styled-components";
 import { Link } from 'react-router-dom';
+import { StylesConfig } from 'react-select';
+import { FaBars } from 'react-icons/fa';
 
 const animated = keyframes`
   from{
@@ -152,6 +154,7 @@ export const PageActions = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-top: 1rem;
 
   button{
     outline: 0;
@@ -168,15 +171,54 @@ export const PageActions = styled.div`
   }
 `;
 
-export const IssuesFilter = styled.select`
-  padding: 0.5rem 0.75rem;
-  margin-top: 0.5rem;
-  color: #fff;
-  background: #222;
-  font-size: 0.875rem;
-  border-radius: 0.5rem;
-`;
+export const SelectStyle: StylesConfig = {
+  container: (provided) => ({
+    ...provided,
+    paddingTop: '0.5rem',
+    width: '20%',
+    background: 'transparent',
+    border: '0',
+    outline: '0',
+    margin: '0',
+    borderRadius: '0%',
+  }),
+  
+  control: (provided, state) => ({
+    ...provided,
+    background: '#222',
+    color: '#fff',
+    borderRadius: state.menuIsOpen ? '0.25rem 0.25rem 0 0' : '0.25rem',
+    border: 'none',
+    cursor: 'pointer',
+    boxShadow: 'none',
+  }),
 
-export const FilterOptions = styled.option`
-  color: #fff;
-`;
+  singleValue: (provided) => ({
+    ...provided,
+    color: '#fff',
+  }),
+
+  menu: (provided) => ({
+    ...provided,
+    background: '#222',
+    border: '0',
+    outline: '0',
+    margin: '0',
+    borderRadius: '0 0 0.25rem 0.25rem',
+  }),
+
+  option: (provided, { isFocused } ) => ({
+    ...provided,
+    color: '#fff',
+    background: isFocused ? '#444' : 'transparent',
+    cursor: 'pointer',
+  }),
+};
+
+export const CustomDropdown = () => {
+  return (
+    <FaBars size={35} style={{
+      padding: '0 0.5rem',
+    }}/>
+  )
+}
